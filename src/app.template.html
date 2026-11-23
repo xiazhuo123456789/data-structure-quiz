@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
-<title>数据结构刷题台 · 第1—5章</title>
+<title>数据结构刷题台 · 第1—5章 + 随堂练习</title>
 <style>
 *{box-sizing:border-box}
 :root{
@@ -74,12 +74,15 @@ h1{font-family:"Songti SC","SimSun",Georgia,serif;font-size:clamp(34px,4.4vw,46p
 .section-head h2{font-size:19px;margin:0;font-weight:700}
 .section-head span{font-size:12.5px;color:var(--muted)}
 .history{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
-.hrow{display:flex;align-items:center;gap:14px;padding:13px 18px;border-top:1px solid #f0ece1;font-size:14px}
+.hrow{display:flex;align-items:center;gap:14px;padding:13px 18px;border:0;border-top:1px solid #f0ece1;font-size:14px;width:100%;background:transparent;color:inherit;text-align:left;font-family:inherit;cursor:pointer;transition:background .15s}
 .hrow:first-child{border-top:0}
+.hrow:hover{background:rgba(28,33,38,.035)}
 .hrow .hm{font-size:11.5px;font-weight:700;padding:2px 7px;border-radius:6px;background:var(--soft);color:var(--accent)}
 .hrow .hm.exam{background:var(--amber-soft);color:var(--amber)}
 .hrow .hd{color:var(--muted);font-size:12.5px}
 .hrow .hs{margin-left:auto;font-family:Georgia,serif;font-size:16px;font-weight:600}
+.hrow .hgo{font-size:12px;font-weight:700;color:var(--accent);opacity:.85;white-space:nowrap}
+.mobile-pack{display:none}
 .empty{padding:26px 18px;text-align:center;color:var(--muted);font-size:14px}
 
 /* ---------- 通用面板 ---------- */
@@ -448,6 +451,7 @@ body::after{
 .pack-foot-row b{font-family:Georgia,serif;font-size:15px;color:#f4efe3;letter-spacing:0}
 .pack-shadow{position:absolute;bottom:18px;width:160px;height:26px;border-radius:50%;background:rgba(0,0,0,.5);filter:blur(14px);transform:rotate(-4deg)}
 @keyframes packFloat{0%,100%{transform:rotateY(-17deg) rotateX(5deg) rotateZ(-2.5deg) translateY(0)}50%{transform:rotateY(-12deg) rotateX(3deg) rotateZ(-1deg) translateY(-11px)}}
+@keyframes mpFloat{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1deg)}}
 @keyframes foilShift{to{transform:rotate(360deg)}}
 
 .hero-side{display:flex;flex-direction:column;gap:12px}
@@ -497,10 +501,12 @@ body::after{
 .section-head span{color:var(--ui-muted)}
 .history{background:rgba(13,28,23,.7);border:1px solid var(--ui-line);box-shadow:0 24px 54px -44px #000;backdrop-filter:blur(10px)}
 .hrow{border-top:1px solid rgba(255,255,255,.07);color:var(--ui)}
+.hrow:hover{background:rgba(255,255,255,.045)}
 .hrow .hm{background:rgba(110,231,183,.1);color:#9df0cd}
 .hrow .hm.exam{background:rgba(241,180,91,.12);color:#f6cb8d}
 .hrow .hd{color:var(--ui-muted)}
 .hrow .hs{color:var(--accent)}
+.hrow .hgo{color:#9df0cd}
 .empty{color:var(--ui-muted)}
 
 /* 组卷 / 工具页：深色桌面上的浅色纸 */
@@ -667,6 +673,7 @@ textarea.answer:focus{border-color:#2e9c72;box-shadow:0 0 0 4px rgba(46,156,114,
 .rev-top .stemline,.rev-stem,.wrong-stem{color:#2a332f}
 .rev-top .tt,.wrong-top .tt{background:#ece7da;color:#69736e}
 .rev-body,.wrong-exp,.wrong-stem,.wrong-exp details,.rev-ans{color:#4d5852}
+.rev-ans b,.fb-answer b{white-space:pre-wrap}
 .rev-opt{color:#43504a}
 .rev-opt.right{background:#e4f5eb}
 .rev-opt.mine{outline-color:#a9a18e}
@@ -694,6 +701,37 @@ textarea.answer:focus{border-color:#2e9c72;box-shadow:0 0 0 4px rgba(46,156,114,
   .hero{grid-template-columns:1fr}
   .hero-main{grid-template-columns:1fr;padding:26px 22px 24px}
   .hero-art{display:none}
+  .hero-cta{align-items:flex-end}
+  .mobile-pack{
+    display:flex;position:relative;right:auto;bottom:auto;z-index:3;
+    flex:0 0 94px;margin-left:auto;align-self:flex-end;
+    width:94px;height:140px;padding:13px 11px 11px;border-radius:11px;
+    border:1px solid rgba(255,255,255,.28);
+    background:linear-gradient(155deg,#3a6a58 0%,#17342b 42%,#08140f 100%);
+    color:#f4efe3;text-align:left;flex-direction:column;align-items:flex-start;justify-content:space-between;
+    overflow:hidden;isolation:isolate;
+    box-shadow:0 24px 40px -22px rgba(0,0,0,.85),0 0 26px -12px rgba(110,231,183,.65);
+    animation:mpFloat 5.6s ease-in-out infinite;
+  }
+  .mobile-pack::before{
+    content:"";position:absolute;inset:-30%;z-index:-1;
+    background:conic-gradient(from 220deg at 65% 20%,transparent 0 22%,rgba(143,240,199,.5) 30%,rgba(247,207,125,.5) 40%,rgba(197,156,255,.45) 50%,transparent 68% 100%);
+    mix-blend-mode:screen;opacity:.48;filter:blur(8px);animation:foilShift 8s linear infinite;
+  }
+  .mobile-pack::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 5px),linear-gradient(120deg,rgba(255,255,255,.28),transparent 30% 65%,rgba(255,255,255,.08));
+    mix-blend-mode:overlay;opacity:.4;
+  }
+  .mobile-pack .mp-tape{position:absolute;left:0;right:0;top:0;height:10px;background:repeating-linear-gradient(90deg,#e8dfc8 0 2px,#8e856f 2px 4px);opacity:.7}
+  .mobile-pack .mp-kicker{font-size:7px;letter-spacing:.12em;color:#cfe3da;opacity:.72;margin-top:1px;white-space:nowrap}
+  .mobile-pack .mp-title{font-family:"Songti SC","SimSun",serif;font-size:20px;line-height:1.03;font-weight:600;letter-spacing:.02em}
+  .mobile-pack .mp-title em{font-style:normal;color:#8ef0c7}
+  .mobile-pack .mp-num{font-size:8.5px;letter-spacing:.08em;color:#b6c9c0}
+  .mobile-pack .mp-num b{font-family:Georgia,serif;font-size:16px;color:#f4efe3;letter-spacing:0;margin-right:2px}
+  .hrow{flex-wrap:wrap;gap:8px}
+  .hrow .hd{order:5;flex-basis:100%;font-size:11.5px}
+  .hrow .hgo{margin-left:auto}
   .hero h1{font-size:clamp(38px,11vw,52px)}
   .hero-side{flex-direction:column}
   .hero-side .stat-card{flex-direction:row;align-items:center;gap:12px}
@@ -715,7 +753,7 @@ textarea.answer:focus{border-color:#2e9c72;box-shadow:0 0 0 4px rgba(46,156,114,
   .tear-grip{font-size:10.5px;padding:5px 10px 5px 12px}
 }
 @media (prefers-reduced-motion:reduce){
-  .pack,.pack::before,.reveal-shell.revealed .feedback,.reveal-shell.celebrate .reveal-burst i{animation:none!important}
+  .pack,.pack::before,.reveal-shell.revealed .feedback,.reveal-shell.celebrate .reveal-burst i,.mobile-pack,.mobile-pack::before{animation:none!important}
 }
 </style>
 </head>
@@ -734,9 +772,9 @@ const LS = {
   wrong: 'dsq.wrong.v1',
   history: 'dsq.history.v1'
 };
-const TYPE_LABEL = {choice:'选择题', blank:'填空题', judge:'判断题', short:'简答计算题', algo:'算法设计题'};
+const TYPE_LABEL = {choice:'选择题', blank:'填空题', judge:'判断题', short:'简答计算题', algo:'算法设计题', exercise:'随堂练习'};
 const TYPE_ORDER = ['choice','blank','judge','short','algo'];
-const TYPE_EN = {choice:'选择', blank:'填空', judge:'判断', short:'简答', algo:'算法'};
+const TYPE_EN = {choice:'选择', blank:'填空', judge:'判断', short:'简答', algo:'算法', exercise:'随堂'};
 
 const state = {
   view: 'home',
@@ -745,7 +783,7 @@ const state = {
   wrong: [],
   history: [],
   setup: {mode:'practice', chapters:[], types:[], count:25, order:'random', minutes:60},
-  ui: {index:0, resultFilter:'all', setupReady:false}
+  ui: {index:0, resultFilter:'all', setupReady:false, historyMode:false, prevSession:null, historyRecord:null}
 };
 
 const app = () => document.getElementById('app');
@@ -888,10 +926,11 @@ function loadBank(){
 /* ---------------- 会话 ---------------- */
 function availableQuestions(cfg){
   const bank = state.bank;
-  return bank.questions.filter(q =>
-    cfg.chapters.indexOf(q.chapter) >= 0 &&
-    cfg.types.indexOf(q.type) >= 0
-  );
+  return bank.questions.filter(q => {
+    if(cfg.chapters.indexOf(q.chapter) < 0) return false;
+    if(q.set === 'exercise') return cfg.types.indexOf('exercise') >= 0;
+    return cfg.types.indexOf(q.type) >= 0;
+  });
 }
 function createSession(mode, questions, cfg){
   return {
@@ -1046,14 +1085,45 @@ function pushHistory(s){
   const stat = computeScore(s);
   state.history.unshift({
     at: Date.now(),
+    sid: s.id,
     mode: s.mode,
     total: s.questions.length,
     score: stat.score,
     correct: stat.right,
     objectiveTotal: stat.objectiveTotal,
-    duration: Math.floor((Date.now() - s.startedAt) / 1000)
+    duration: Math.floor((Date.now() - s.startedAt) / 1000),
+    snap: {
+      id: s.id,
+      mode: s.mode,
+      cfg: clone(s.cfg),
+      questions: clone(s.questions),
+      answers: clone(s.answers),
+      submittedQ: clone(s.submittedQ || {}),
+      revealedQ: clone(s.revealedQ || {}),
+      selfEval: clone(s.selfEval || {}),
+      overrides: clone(s.overrides || {}),
+      startedAt: s.startedAt,
+      finishedAt: s.finishedAt || Date.now()
+    }
   });
-  state.history = state.history.slice(0, 80);
+  state.history = state.history.slice(0, 30);
+  save(LS.history, state.history);
+}
+function syncHistory(s){
+  if(!s || !s.id) return;
+  const h = state.history.find(x => x.sid === s.id || (x.snap && x.snap.id === s.id));
+  if(!h) return;
+  const stat = computeScore(s);
+  h.score = stat.score;
+  h.correct = stat.right;
+  h.objectiveTotal = stat.objectiveTotal;
+  h.duration = Math.floor(((s.finishedAt || Date.now()) - s.startedAt) / 1000);
+  if(h.snap){
+    h.snap.selfEval = clone(s.selfEval || {});
+    h.snap.overrides = clone(s.overrides || {});
+    h.snap.answers = clone(s.answers || {});
+    h.snap.submittedQ = clone(s.submittedQ || {});
+  }
   save(LS.history, state.history);
 }
 
@@ -1293,7 +1363,7 @@ function questionCardHTML(q, i, s){
   return `<article class="qcard" data-uid="${esc(q.uid)}">
     <div class="qmeta">
       <span class="tag">${esc(q.chapterTitle || chapterTitle(q.chapter))}</span>
-      <span class="tag ghost">${esc(TYPE_LABEL[q.type] || q.typeTitle || '题目')}</span>
+      <span class="tag ghost">${esc(q.set === 'exercise' ? '随堂练习 · ' + (TYPE_LABEL[q.type] || q.typeTitle || '题目') : (TYPE_LABEL[q.type] || q.typeTitle || '题目'))}</span>
       <span class="qno">题号 ${esc(q.no)} · 第 ${i+1} / ${s.questions.length} 题</span>
     </div>
     <div class="stem">${stemParts(q, a, interactive)}</div>
@@ -1349,7 +1419,7 @@ function topbar(active){
   return `<header class="topbar">
     <div class="brand">
       <div class="logo">DS</div>
-      <div>数据结构刷题台<small>第 1—5 章 · 本地离线</small></div>
+      <div>数据结构刷题台<small>第 1—5 章 + 随堂练习 · 本地离线</small></div>
     </div>
     <nav class="nav">
       <button data-act="go" data-view="home" class="${active === 'home' ? 'active' : ''}">首页</button>
@@ -1367,6 +1437,8 @@ function topbar(active){
 function homeView(){
   const bank = state.bank;
   const total = bank.questions.length;
+  const exerciseCount = bank.questions.filter(q => q.set === 'exercise').length;
+  const chapterCount = total - exerciseCount;
   const avg = state.history.length
     ? Math.round(state.history.reduce((s,h) => s + (h.total ? h.score / h.total : 0), 0) / state.history.length * 100)
     : 0;
@@ -1387,10 +1459,16 @@ function homeView(){
         <div class="hero-copy">
           <div class="eyebrow">DATA STRUCTURES · C VERSION</div>
           <h1>数据结构<br><em>章节拆题</em></h1>
-          <p>依据严蔚敏《数据结构（C语言版）》第 1—5 章整理的 ${total} 道题。整卷模考，或逐题拆封：先作答，再撕开答案封条，看对错与解析。</p>
+          <p>依据严蔚敏《数据结构（C语言版）》第 1—5 章整理的 ${chapterCount} 道题，另附 ${exerciseCount} 道课堂随堂练习。整卷模考，或逐题拆封：先作答，再撕开答案封条，看对错与解析。</p>
           <div class="hero-cta">
             <button class="btn primary big" data-act="go" data-view="setup" data-mode="practice">开始拆题</button>
             <button class="btn big" data-act="go" data-view="setup" data-mode="exam">考试模考</button>
+            ${exerciseCount ? `<button class="mobile-pack" data-act="open-exercise" aria-label="打开随堂练习">
+              <span class="mp-tape"></span>
+              <span class="mp-kicker">SEALED · 02</span>
+              <span class="mp-title">随堂<br><em>练习</em></span>
+              <span class="mp-num"><b>${exerciseCount}</b> 题</span>
+            </button>` : ''}
           </div>
         </div>
         <div class="hero-art" aria-hidden="true">
@@ -1419,7 +1497,7 @@ function homeView(){
                   <path d="M56 22h8M26 56h8M86 56h8M56 56h8" stroke="#eaf9f1" stroke-width="1" stroke-opacity=".6"/>
                 </svg>
               </div>
-              <div class="pack-name">CHAPTER<br>01—05<span>SELECT · SOLVE · TEAR</span></div>
+              <div class="pack-name">CHAPTER<br>01—05<span>+ EXERCISE SET</span></div>
               <div class="pack-foot-row"><b>${total}</b><span>QUESTIONS</span></div>
             </div>
             <div class="pack-foot"></div>
@@ -1463,14 +1541,15 @@ function homeView(){
       </button>
     </section>
 
-    <div class="section-head"><h2>练习记录</h2><span>只保存在这台电脑的浏览器里</span></div>
+    <div class="section-head"><h2>练习记录</h2><span>点击任意一条可以回看题目和答案</span></div>
     <section class="history">
-      ${hist.length ? hist.map(h => `<div class="hrow">
+      ${hist.length ? hist.map((h,i) => `<button class="hrow" data-act="open-history" data-i="${i}" title="打开这次练习">
         <span class="hm ${h.mode === 'exam' ? 'exam' : ''}">${h.mode === 'exam' ? '考试' : '作业'}</span>
         <span>${h.total} 题</span>
         <span class="hd">${fmtDate(h.at)} · 用时 ${fmtClock(h.duration)} · 客观题 ${h.correct}/${h.objectiveTotal}</span>
         <span class="hs">${h.total ? Math.round(h.score / h.total * 100) : 0}%</span>
-      </div>`).join('') : `<div class="empty">还没有练习记录，选一个模式开始吧。</div>`}
+        <span class="hgo">查看 ›</span>
+      </button>`).join('') : `<div class="empty">还没有练习记录，选一个模式开始吧。</div>`}
     </section>
   </div>`;
 }
@@ -1479,11 +1558,12 @@ function homeView(){
 function setupView(){
   const s = state.setup;
   const pool = availableQuestions(s);
-  const countTypes = t => pool.filter(q => q.type === t).length;
+  const exerciseCount = state.bank.questions.filter(q => q.set === 'exercise').length;
   const typeCounts = {};
-  state.bank.questions.forEach(q => { typeCounts[q.type] = (typeCounts[q.type] || 0) + 1; });
+  state.bank.questions.filter(q => q.set !== 'exercise').forEach(q => { typeCounts[q.type] = (typeCounts[q.type] || 0) + 1; });
   const chaptersPresent = state.bank.chapters;
-  const typesPresent = TYPE_ORDER.filter(t => typeCounts[t]);
+  const typesPresent = (exerciseCount ? ['exercise'] : []).concat(TYPE_ORDER.filter(t => typeCounts[t]));
+  const typeCount = t => t === 'exercise' ? exerciseCount : (typeCounts[t] || 0);
   const countOptions = [10, 15, 25, 50, 'all'];
   const isExam = s.mode === 'exam';
 
@@ -1516,7 +1596,7 @@ function setupView(){
       <div class="chips">
         ${typesPresent.map(t => {
           const on = s.types.indexOf(t) >= 0;
-          return `<button class="chip ${on ? 'on' : ''}" data-act="toggle-type" data-v="${t}">${TYPE_LABEL[t]}<span class="n">${typeCounts[t]}</span></button>`;
+          return `<button class="chip ${on ? 'on' : ''}" data-act="toggle-type" data-v="${t}">${TYPE_LABEL[t]}<span class="n">${typeCount(t)}</span></button>`;
         }).join('')}
         <button class="linkbtn" data-act="select-all-type">全选</button>
         <button class="linkbtn" data-act="select-none-type">全不选</button>
@@ -1588,7 +1668,7 @@ function reviewItemHTML(q, s){
   let pill = '';
   if(r.manual){
     const se = s.selfEval[q.uid];
-    pill = se === 'full' ? '<span class="pill right">已掌握</span>' : se === 'partial' ? '<span class="pill manual">部分掌握</span>' : se === 'none' ? '<span class="pill wrong">未掌握</span>' : '<span class="pill manual">待自评</span>';
+    pill = state.ui.historyMode ? '<span class="pill manual">参考答案</span>' : se === 'full' ? '<span class="pill right">已掌握</span>' : se === 'partial' ? '<span class="pill manual">部分掌握</span>' : se === 'none' ? '<span class="pill wrong">未掌握</span>' : '<span class="pill manual">待自评</span>';
   } else if(st === 'correct'){
     pill = '<span class="pill right">正确</span>';
   } else if(isAnswered(q, a)){
@@ -1599,10 +1679,10 @@ function reviewItemHTML(q, s){
   const opts = q.type === 'choice' ? '<div style="margin:6px 0 8px">' + q.options.map(o =>
     `<div class="rev-opt ${o.key === q.answerKey ? 'right' : ''} ${a && a.choice === o.key ? 'mine' : ''}">${esc(o.key)}. ${esc(o.text)}</div>`).join('') + '</div>' : '';
 
-  return `<article class="rev" data-uid="${esc(q.uid)}">
+  return `<article class="rev ${state.ui.historyMode ? 'open' : ''}" data-uid="${esc(q.uid)}">
     <div class="rev-top" data-act="toggle-rev">
       <span class="no">${esc(q.no)}</span>
-      <span class="tt">${esc(TYPE_LABEL[q.type] || '')}</span>
+      <span class="tt">${esc((q.set === 'exercise' ? '随堂 · ' : '') + (TYPE_LABEL[q.type] || ''))}</span>
       <span class="stemline">${esc(String(q.stem).replace(/\[BLOCK:\d+\]/g,'').replace(/\s+/g,' ').replace(/_{3,}/g,'____'))}</span>
       ${pill}
       <span style="color:var(--muted);font-size:12px;transform:rotate(90deg)">›</span>
@@ -1615,7 +1695,7 @@ function reviewItemHTML(q, s){
         <span>你的答案：<b>${esc(userAnswerText(q, a))}</b></span>
         <span>参考答案：<b class="ok">${esc(correctAnswerText(q))}</b></span>
       </div>
-      ${r.manual ? selfEvalHTML(q, s) : ''}
+      ${r.manual && !state.ui.historyMode ? selfEvalHTML(q, s) : ''}
       <div class="exp"><div class="exp-title">解　析</div><div class="exp-body">${renderFlow(q.explanation, q)}</div></div>
     </div>
   </article>`;
@@ -1624,6 +1704,7 @@ function resultView(){
   const s = state.session;
   if(!s) return homeView();
   const stat = computeScore(s);
+  const hAt = state.ui.historyMode ? (state.history[state.ui.historyIndex] && state.history[state.ui.historyIndex].at) || s.finishedAt || Date.now() : 0;
   const filter = state.ui.resultFilter;
   const minutes = Math.floor((s.finishedAt || Date.now()) - s.startedAt) / 60000;
   const items = s.questions.filter(q => {
@@ -1647,11 +1728,15 @@ function resultView(){
   return `<div class="wrap">
     ${topbar('home')}
     <div class="page-head">
-      <div><h2>${s.mode === 'exam' ? '考试结果' : '练习结果'}</h2>
-      <p>${s.mode === 'exam' ? '整卷已批改，答案与解析现已解锁。' : '本次练习已结束，可以逐题核对。'}用时 ${fmtClock(Math.floor((s.finishedAt - s.startedAt) / 1000))}</p></div>
+      <div><h2>${state.ui.historyMode ? '历史练习记录' : (s.mode === 'exam' ? '考试结果' : '练习结果')}</h2>
+      <p>${state.ui.historyMode
+        ? `回看 ${fmtDate(hAt)} 完成的${s.mode === 'exam' ? '考试' : '练习'}，只读模式。用时 ${fmtClock(Math.floor(((s.finishedAt || Date.now()) - s.startedAt) / 1000))}`
+        : `${s.mode === 'exam' ? '整卷已批改，答案与解析现已解锁。' : '本次练习已结束，可以逐题核对。'}用时 ${fmtClock(Math.floor((s.finishedAt - s.startedAt) / 1000))}`}</p></div>
       <div class="chips">
-        <button class="btn" data-act="go" data-view="home">返回首页</button>
-        <button class="btn primary" data-act="again" data-mode="${s.mode}">再来一套</button>
+        ${state.ui.historyMode
+          ? `<button class="btn" data-act="close-history">返回练习记录</button>`
+          : `<button class="btn" data-act="go" data-view="home">返回首页</button>
+             <button class="btn primary" data-act="again" data-mode="${s.mode}">再来一套</button>`}
       </div>
     </div>
 
@@ -1670,7 +1755,7 @@ function resultView(){
       </div>
     </div>
 
-    ${stat.manualTotal > stat.manualDone ? `<div class="panel" style="padding:14px 18px;margin-bottom:14px"><div class="hint">还有 <b>${stat.manualTotal - stat.manualDone}</b> 道主观题（简答、算法或需要人工判断的填空题）没有自评。展开题目后可选择「完全掌握 / 部分掌握 / 未掌握」，得分会随之更新。</div></div>` : ''}
+    ${!state.ui.historyMode && stat.manualTotal > stat.manualDone ? `<div class="panel" style="padding:14px 18px;margin-bottom:14px"><div class="hint">还有 <b>${stat.manualTotal - stat.manualDone}</b> 道主观题（简答、算法或需要人工判断的填空题）没有自评。展开题目后可选择「完全掌握 / 部分掌握 / 未掌握」，得分会随之更新。</div></div>` : ''}
 
     <div class="section-head"><h2>逐题回顾</h2><span>${items.length} 题</span></div>
     <div class="filters">
@@ -1682,10 +1767,43 @@ function resultView(){
     </div>
 
     <div class="result-actions">
-      ${wrongInPaper.length ? `<button class="btn primary" data-act="retry-paper-wrong">再练这套的错题（${wrongInPaper.length} 题）</button>` : ''}
-      <button class="btn" data-act="go" data-view="wrong">打开错题本</button>
-      <button class="btn" data-act="go" data-view="home">返回首页</button>
+      ${state.ui.historyMode
+        ? `<button class="btn primary" data-act="close-history">返回练习记录</button>`
+        : `${wrongInPaper.length ? `<button class="btn primary" data-act="retry-paper-wrong">再练这套的错题（${wrongInPaper.length} 题）</button>` : ''}
+           <button class="btn" data-act="go" data-view="wrong">打开错题本</button>
+           <button class="btn" data-act="go" data-view="home">返回首页</button>`}
     </div>
+  </div>`;
+}
+
+/* ---------------- 视图：旧记录摘要 ---------------- */
+function historyView(){
+  const h = state.ui.historyRecord;
+  if(!h){ state.view = 'home'; return homeView(); }
+  const pct = h.total ? Math.round(h.score / h.total * 100) : 0;
+  return `<div class="wrap">
+    ${topbar('home')}
+    <div class="page-head">
+      <div><h2>历史练习记录</h2><p>${fmtDate(h.at)} · ${h.mode === 'exam' ? '考试' : '作业'}模式 · 用时 ${fmtClock(h.duration)}</p></div>
+      <div class="chips"><button class="btn" data-act="close-history">返回练习记录</button></div>
+    </div>
+    <section class="panel" style="padding:22px">
+      <div class="result-grid" style="margin-bottom:0">
+        <div class="score-card">
+          <div class="lbl">SCORE</div>
+          <div class="big"><b>${h.score}</b><span>/ ${h.total}</span></div>
+          <div class="sub">得分率 ${pct}%</div>
+          <div class="ring"></div>
+        </div>
+        <div class="mini-grid">
+          <div class="mini-card"><b>${h.total} 题</b><span>题目总数</span></div>
+          <div class="mini-card"><b>${h.correct}/${h.objectiveTotal}</b><span>客观题正确</span></div>
+          <div class="mini-card"><b>${fmtClock(h.duration)}</b><span>用时</span></div>
+          <div class="mini-card"><b>${h.mode === 'exam' ? '考试' : '作业'}</b><span>练习模式</span></div>
+        </div>
+      </div>
+      <div class="hint" style="margin-top:20px">这条记录是旧版本保存的，只留下了成绩摘要，没有保存当时的题目和作答内容。从现在起完成的新练习会保存完整快照，点击记录可以逐题回看题目、你的答案、正确答案和解析。</div>
+    </section>
   </div>`;
 }
 
@@ -1729,7 +1847,7 @@ function bankView(){
   const bank = state.bank;
   const total = bank.questions.length;
   const typeCounts = {};
-  bank.questions.forEach(q => { typeCounts[q.type] = (typeCounts[q.type] || 0) + 1; });
+  bank.questions.filter(q => q.set !== 'exercise').forEach(q => { typeCounts[q.type] = (typeCounts[q.type] || 0) + 1; });
   return `<div class="wrap">
     ${topbar('bank')}
     <div class="page-head">
@@ -1810,6 +1928,7 @@ function render(){
     case 'setup': html = setupView(); break;
     case 'quiz': html = quizView(); break;
     case 'result': html = resultView(); break;
+    case 'history': html = historyView(); break;
     case 'wrong': html = wrongView(); break;
     case 'bank': html = bankView(); break;
     case 'formula': html = formulaView(); break;
@@ -1982,16 +2101,70 @@ function dialog({title, message, ok = '确定', cancel = '取消', danger = fals
   });
 }
 function resetSetup(){
+  const allTypes = TYPE_ORDER.filter(t => state.bank.questions.some(q => q.type === t && q.set !== 'exercise'));
+  if(state.bank.questions.some(q => q.set === 'exercise')) allTypes.push('exercise');
   state.setup = {
     mode: state.setup.mode || 'practice',
     chapters: state.bank.chapters.map(c => c.no),
-    types: TYPE_ORDER.filter(t => state.bank.questions.some(q => q.type === t)),
+    types: allTypes,
     count: 25,
     order: 'random',
     minutes: 60
   };
 }
+function leaveHistory(){
+  if(!state.ui.historyMode) return;
+  state.session = state.ui.prevSession || null;
+  state.ui.prevSession = null;
+  state.ui.historyMode = false;
+  state.ui.historyRecord = null;
+  state.ui.historyIndex = null;
+}
+function openHistory(index){
+  const h = state.history[index];
+  if(!h) return;
+  leaveHistory();
+  state.ui.prevSession = state.session;
+  state.ui.historyMode = true;
+  state.ui.historyIndex = index;
+  state.ui.historyRecord = h;
+  if(h.snap && Array.isArray(h.snap.questions) && h.snap.questions.length){
+    const snap = clone(h.snap);
+    const s = {
+      id: 'h' + (h.at || Date.now()),
+      mode: snap.mode || h.mode || 'practice',
+      cfg: snap.cfg || {chapters: [], types: [], count: h.total, order: 'random', minutes: 0},
+      questions: snap.questions.map((q, i) => normalizeQuestion(q, i)),
+      answers: snap.answers || {},
+      submittedQ: snap.submittedQ || {},
+      revealedQ: snap.revealedQ || {},
+      selfEval: snap.selfEval || {},
+      overrides: snap.overrides || {},
+      submitted: true,
+      ended: true,
+      index: 0,
+      startedAt: snap.startedAt || (h.at - (h.duration || 0) * 1000),
+      endsAt: 0,
+      finishedAt: snap.finishedAt || h.at
+    };
+    state.session = s;
+    state.ui.resultFilter = 'all';
+    state.view = 'result';
+  } else {
+    state.session = null;
+    state.view = 'history';
+  }
+  render();
+  window.scrollTo(0, 0);
+}
+function closeHistory(){
+  leaveHistory();
+  state.view = 'home';
+  render();
+  window.scrollTo(0, 0);
+}
 function go(view){
+  if(state.ui.historyMode) leaveHistory();
   if(view === 'quiz' && !state.session){ state.view = 'home'; render(); return; }
   state.view = view;
   render();
@@ -2012,6 +2185,7 @@ function overrideCorrect(uid){
   state.wrong = state.wrong.filter(w => w.q.uid !== uid);
   save(LS.wrong, state.wrong);
   saveSession();
+  syncHistory(s);
   render();
   toast('已标记为正确，并从错题本移除');
 }
@@ -2034,6 +2208,23 @@ document.addEventListener('click', async (e) => {
     case 'resume':
       if(state.session){ state.view = 'quiz'; render(); window.scrollTo(0, 0); }
       break;
+    case 'open-history':
+      openHistory(Number(el.dataset.i));
+      break;
+    case 'close-history':
+      closeHistory();
+      break;
+    case 'open-exercise': {
+      state.setup.mode = 'practice';
+      state.setup.chapters = [0];
+      state.setup.types = ['exercise'];
+      state.setup.count = 'all';
+      state.setup.order = 'seq';
+      state.view = 'setup';
+      render();
+      window.scrollTo(0, 0);
+      break;
+    }
     case 'pick': {
       if(!s || s.submitted) return;
       const q = currentQuestion();
@@ -2101,6 +2292,7 @@ document.addEventListener('click', async (e) => {
       const uid = el.dataset.uid;
       s.selfEval[uid] = el.dataset.v;
       saveSession();
+      syncHistory(s);
       if(state.view === 'result'){
         render();
       } else {
@@ -2196,7 +2388,9 @@ document.addEventListener('click', async (e) => {
       break;
     }
     case 'select-all-type': {
-      state.setup.types = TYPE_ORDER.filter(t => state.bank.questions.some(q => q.type === t));
+      const allTypes = TYPE_ORDER.filter(t => state.bank.questions.some(q => q.type === t && q.set !== 'exercise'));
+      if(state.bank.questions.some(q => q.set === 'exercise')) allTypes.push('exercise');
+      state.setup.types = allTypes;
       render();
       break;
     }
@@ -2234,7 +2428,7 @@ document.addEventListener('click', async (e) => {
       break;
     }
     case 'restore-bank': {
-      const ok = await dialog({title:'恢复内置题库？', message:'当前导入的题库会被内置的 125 题题库替换（原文件不会丢失，可提前导出备份）。', ok:'恢复内置'});
+      const ok = await dialog({title:'恢复内置题库？', message:'当前导入的题库会被内置的 155 题题库替换（125 章节题 + 30 随堂练习；原文件不会丢失，可提前导出备份）。', ok:'恢复内置'});
       if(!ok) break;
       localStorage.removeItem(LS.bank);
       state.bank = normalizeBank(BUILTIN_BANK);

@@ -88,7 +88,7 @@ function showAbout() {
     type: 'info',
     title: '关于',
     message: APP_NAME,
-    detail: `版本 ${app.getVersion()}\n数据结构（C语言版）第 1—5 章 · 125 题\n考试模式 / 作业模式 / 错题本 / 题库导入导出\n\nGitHub：${GITHUB_URL}`,
+    detail: `版本 ${app.getVersion()}\n数据结构（C语言版）第 1—5 章 125 题 + 随堂练习 30 题\n考试模式 / 作业模式 / 错题本 / 历史记录回看 / 题库导入导出\n\nGitHub：${GITHUB_URL}`,
     buttons: ['确定']
   });
 }

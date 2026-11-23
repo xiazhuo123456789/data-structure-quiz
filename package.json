@@ -1,7 +1,7 @@
 {
   "name": "data-structure-quiz",
-  "version": "1.1.0",
-  "description": "数据结构（C语言版）第 1—5 章本地刷题系统：考试模式、作业模式、撕封条看解析、错题本、题库导入导出",
+  "version": "1.2.0",
+  "description": "数据结构（C语言版）第 1—5 章 + 随堂练习本地刷题系统：考试模式、作业模式、撕封条看解析、错题本、历史记录回看、题库导入导出",
   "main": "electron/main.js",
   "author": "xiazhuo123456789",
   "license": "MIT",

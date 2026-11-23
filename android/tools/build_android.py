@@ -25,8 +25,8 @@ def main() -> int:
 
     bank = json.loads(BANK_JSON.read_text(encoding="utf-8"))
     questions = bank.get("questions", [])
-    if len(questions) != 125:
-        raise SystemExit(f"题库题量异常：{len(questions)}，预期 125")
+    if len(questions) != 155:
+        raise SystemExit(f"题库题量异常：{len(questions)}，预期 155（125 章节题 + 30 随堂练习）")
 
     ANDROID_ASSETS.mkdir(parents=True, exist_ok=True)
     target = ANDROID_ASSETS / "index.html"
