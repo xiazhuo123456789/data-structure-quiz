@@ -9,7 +9,7 @@
 
 界面采用“深色展台 + 浅色答题卡”的 v1.1 视觉：首页像一包封好的题卡，作业模式提交后，答案会被封条盖住，向下拖动撕开才揭晓。设计参考了三条抖音“撕卡 / 盲盒抽卡”视频，详细拆解见 [docs/视觉参考拆解.md](docs/视觉参考拆解.md)。
 
-> 如果这个项目对你有帮助，欢迎到 [GitHub 主页](https://github.com/xiazhuo123456789) 点个 Star。
+> 如果这个项目对你有帮助，欢迎到 [GitHub 仓库](https://github.com/xiazhuo123456789/data-structure-quiz) 点个 Star。
 
 ![界面预览](assets/screenshot.png)
 
