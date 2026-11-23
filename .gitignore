@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.log
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+
+# 本地答题记录与导出文件
+*.local.json

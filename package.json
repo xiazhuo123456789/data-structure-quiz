@@ -1,0 +1,67 @@
+{
+  "name": "data-structure-quiz",
+  "version": "1.1.0",
+  "description": "数据结构（C语言版）第 1—5 章本地刷题系统：考试模式、作业模式、撕封条看解析、错题本、题库导入导出",
+  "main": "electron/main.js",
+  "author": "xiazhuo123456789",
+  "license": "MIT",
+  "homepage": "https://github.com/xiazhuo123456789",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xiazhuo123456789/data-structure-quiz.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build:html": "python tools/build_html.py",
+    "dist": "electron-builder --win nsis",
+    "dist:portable": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.xiazhuo.datastructurequiz",
+    "productName": "数据结构刷题系统",
+    "copyright": "Copyright © 2026 xiazhuo123456789",
+    "asar": true,
+    "compression": "normal",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "electron/**/*",
+      "app/**/*",
+      "assets/icon.ico",
+      "assets/icon.png",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "artifactName": "数据结构刷题系统-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "数据结构刷题系统",
+      "deleteAppDataOnUninstall": false,
+      "installerLanguages": [
+        "zh_CN"
+      ],
+      "language": "2052"
+    }
+  }
+}
