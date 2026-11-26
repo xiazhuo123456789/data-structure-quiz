@@ -1976,6 +1976,45 @@ body[data-view="ai"] .quiet-card{color:#88a295}
   body[data-view="ai"] .ai-empty p{display:none}
   body[data-view="ai"] .ai-empty h3{font-size:18px;line-height:1.3;margin:0}
 }
+/* ---------- AI 全屏聊天：手机上一屏到底 ---------- */
+@media (max-width:760px){
+  body[data-view="ai"]{overflow:hidden}
+  body[data-view="ai"] .v2-topbar{display:none}
+  body[data-view="ai"] .ai-wrap{
+    max-width:none;height:100vh;height:100dvh;
+    padding:6px 10px calc(82px + env(safe-area-inset-bottom));
+    display:flex;flex-direction:column;gap:6px;overflow:hidden;
+  }
+  body[data-view="ai"] .ai-head{
+    flex:none;display:flex;align-items:center;justify-content:space-between;
+    gap:8px;padding:2px 4px 4px;
+  }
+  body[data-view="ai"] .ai-head-main{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+  body[data-view="ai"] .ai-head .sec-kicker{display:none}
+  body[data-view="ai"] .ai-head p{display:none}
+  body[data-view="ai"] .ai-title-line{margin:0;gap:0}
+  body[data-view="ai"] .ai-head h2{font-size:21px;margin:0;letter-spacing:-.03em;line-height:1.2}
+  body[data-view="ai"] .ai-title-mark{display:none}
+  body[data-view="ai"] .ai-context-chip{
+    margin:0;padding:3px 8px 3px 3px;gap:6px;border-radius:999px;max-width:52vw;
+  }
+  body[data-view="ai"] .ai-context-chip .context-code{width:21px;height:21px;border-radius:6px;font-size:7.5px}
+  body[data-view="ai"] .ai-context-copy b{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  body[data-view="ai"] .ai-context-copy small{display:none}
+  body[data-view="ai"] .ai-context-switch{display:none}
+  body[data-view="ai"] .ai-head-side{flex-direction:row;align-items:center;gap:6px;padding:0;flex:none}
+  body[data-view="ai"] .ai-status{font-size:8.5px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  body[data-view="ai"] .ai-settings-btn{padding:6px 8px;border-radius:10px;font-size:9px;gap:4px}
+  body[data-view="ai"] .ai-settings-btn span{font-size:11px}
+  body[data-view="ai"] .ai-shell{display:block;flex:1;min-height:0;height:auto}
+  body[data-view="ai"] .ai-chat{height:100%;min-height:0;border-radius:18px}
+  body[data-view="ai"] .ai-chat-head{padding:8px 12px;gap:6px}
+  body[data-view="ai"] .ai-thread{flex:1;min-height:0;max-height:none;overflow-y:auto;padding:12px 10px 6px;overscroll-behavior:contain}
+  body[data-view="ai"] .ai-composer{flex:none;padding:8px 10px 9px}
+  body[data-view="ai"] .ai-input{min-height:62px;max-height:124px}
+  body[data-view="ai"] .ai-side{display:none}
+  body[data-view="ai"] .ai-key-banner{margin:0;flex:none}
+}
 @media (prefers-reduced-motion:reduce){
   .ai-orb,.live-dot{animation:none}
   .subject-card,.v2-mode,.chapter-card{transition:none}
@@ -2920,6 +2959,48 @@ function aiStatusHTML(){
   if(aiConfigReady()) return `<span class="ai-status ok"><i></i> 已配置 · ${esc(state.ai.config.model)}</span>`;
   return `<span class="ai-status muted"><i></i> 未配置 API Key</span>`;
 }
+function aiThreadInner(){
+  const messages = state.ai.messages;
+  const list = messages.length ? messages.map((m,i) => `<div class="ai-msg ${m.role} ${m.error ? 'error' : ''}" data-ai-msg="${i}">
+    <span class="ai-avatar">${m.role === 'user' ? '你' : '✦'}</span>
+    <div class="ai-bubble">${m.role === 'assistant' ? mdLite(m.content) : `<span class="user-text">${esc(m.content)}</span>`}</div>
+  </div>`).join('') : `<div class="ai-empty">
+    <div class="ai-empty-orb">✦</div>
+    <h3>贴一道题，<br>我从这里讲。</h3>
+    <p>题干、选项、你的答案，能贴的都贴进来。信息越完整，回答越准。</p>
+    <div class="ai-prompts">
+      <button data-act="ai-sample"><b>试一个示例</b><small>栈与队列</small></button>
+      <button data-act="ai-paste"><b>从剪贴板粘贴</b><small>直接读你复制的题目</small></button>
+      <button data-act="ai-tip"><b>怎么问更好</b><small>看三条提问建议</small></button>
+    </div>
+  </div>`;
+  return list + (state.ai.busy ? `<div class="ai-msg assistant loading"><span class="ai-avatar">✦</span><div class="ai-bubble"><span class="typing"><i></i><i></i><i></i></span><small>正在读题并组织答案…</small></div></div>` : '');
+}
+// 只刷新对话区，不整页重绘：发送时输入框、滚动位置都不动
+function aiPaint(){
+  const thread = document.querySelector('.ai-thread');
+  if(thread){
+    thread.classList.toggle('is-empty', !state.ai.messages.length);
+    thread.innerHTML = aiThreadInner();
+  }
+  const send = document.querySelector('.ai-send');
+  if(send){ send.disabled = state.ai.busy; send.textContent = state.ai.busy ? '…' : '↑'; }
+  const ta = document.getElementById('aiInput');
+  if(ta){ ta.disabled = state.ai.busy; ta.value = state.ai.draft || ''; }
+  const head = document.querySelector('.ai-chat-head');
+  if(head){
+    let clear = head.querySelector('.ai-clear');
+    if(state.ai.messages.length && !clear){
+      clear = document.createElement('button');
+      clear.className = 'ai-clear';
+      clear.dataset.act = 'ai-clear';
+      clear.textContent = '清空';
+      head.appendChild(clear);
+    } else if(!state.ai.messages.length && clear){ clear.remove(); }
+  }
+  const status = document.querySelector('.ai-status');
+  if(status) status.outerHTML = aiStatusHTML();
+}
 function aiScroll(){
   requestAnimationFrame(() => {
     const el = document.querySelector('.ai-thread');
@@ -2945,7 +3026,7 @@ async function aiSend(){
   state.ai.status = 'ready';
   state.ai.messages.push({role:'user', content:text, at:Date.now()});
   saveThread();
-  render();
+  aiPaint();
   aiScroll();
   const sub = activeSubject();
   const payload = [{role:'system', content:aiSystemPrompt()}].concat(
@@ -2965,7 +3046,7 @@ async function aiSend(){
   }finally{
     state.ai.busy = false;
     saveThread();
-    if(state.view === 'ai'){ render(); aiScroll(); }
+    if(state.view === 'ai'){ aiPaint(); aiScroll(); }
   }
 }
 async function aiTest(){
@@ -3362,20 +3443,7 @@ function aiView(){
           ${messages.length ? `<button class="ai-clear" data-act="ai-clear">清空</button>` : ''}
         </div>
         <div class="ai-thread${messages.length ? '' : ' is-empty'}">
-          ${messages.length ? messages.map((m,i) => `<div class="ai-msg ${m.role} ${m.error ? 'error' : ''}">
-            <span class="ai-avatar">${m.role === 'user' ? '你' : '✦'}</span>
-            <div class="ai-bubble">${m.role === 'assistant' ? mdLite(m.content) : `<span class="user-text">${esc(m.content)}</span>`}</div>
-          </div>`).join('') : `<div class="ai-empty">
-            <div class="ai-empty-orb">✦</div>
-            <h3>贴一道题，<br>我从这里讲。</h3>
-            <p>题干、选项、你的答案，能贴的都贴进来。信息越完整，回答越准。</p>
-            <div class="ai-prompts">
-              <button data-act="ai-sample"><b>试一个示例</b><small>栈与队列</small></button>
-              <button data-act="ai-paste"><b>从剪贴板粘贴</b><small>直接读你复制的题目</small></button>
-              <button data-act="ai-tip"><b>怎么问更好</b><small>看三条提问建议</small></button>
-            </div>
-          </div>`}
-          ${state.ai.busy ? `<div class="ai-msg assistant loading"><span class="ai-avatar">✦</span><div class="ai-bubble"><span class="typing"><i></i><i></i><i></i></span><small>正在读题并组织答案…</small></div></div>` : ''}
+          ${aiThreadInner()}
         </div>
         <div class="ai-composer">
           <div class="ai-mode-row">
@@ -3846,6 +3914,10 @@ function formulaView(){
 
 /* ---------------- 渲染入口 ---------------- */
 function render(){
+  // 记住 AI 对话区滚动位置，避免重绘后跳回顶部
+  const aiThreadPrev = state.view === 'ai' ? document.querySelector('.ai-thread') : null;
+  const aiAtBottom = aiThreadPrev ? (aiThreadPrev.scrollHeight - aiThreadPrev.scrollTop - aiThreadPrev.clientHeight < 56) : true;
+  const aiPrevTop = aiThreadPrev ? aiThreadPrev.scrollTop : 0;
   let html = '';
   switch(state.view){
     case 'home': html = homeView(); break;
@@ -3864,6 +3936,10 @@ function render(){
   app().innerHTML = html;
   document.documentElement.dataset.view = state.view;
   document.body.dataset.view = state.view;
+  if(state.view === 'ai' && aiThreadPrev){
+    const t = document.querySelector('.ai-thread');
+    if(t) t.scrollTop = aiAtBottom ? t.scrollHeight : aiPrevTop;
+  }
   updateTimer();
   if(state.view === 'quiz') requestAnimationFrame(initRevealCards);
 }
