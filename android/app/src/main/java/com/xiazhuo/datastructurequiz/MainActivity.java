@@ -27,10 +27,10 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 单 Activity 的离线 WebView 外壳。
+ * 单 Activity 的 WebView 外壳。
  *
  * 页面、题库、样式和脚本全部放在 assets/index.html 内。
- * 不申请网络权限，不加载远程页面，答题记录仍由页面写入 WebView 的 localStorage。
+ * 不加载远程页面；AI 问答按需访问 DeepSeek，答题记录仍由页面写入 WebView 的 localStorage。
  */
 public class MainActivity extends Activity {
 
@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
         webView.setHorizontalScrollBarEnabled(false);
 
         loadingView = new TextView(this);
-        loadingView.setText("数据结构刷题系统\n正在加载题库…");
+        loadingView.setText("研题台\n正在加载题库…");
         loadingView.setTextColor(Color.rgb(231, 241, 236));
         loadingView.setTextSize(16);
         loadingView.setGravity(Gravity.CENTER);
@@ -212,7 +212,7 @@ public class MainActivity extends Activity {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             if (loadingView != null) {
-                loadingView.setText("数据结构刷题系统\n正在加载题库…");
+                loadingView.setText("研题台\n正在加载题库…");
                 loadingView.setVisibility(View.VISIBLE);
             }
         }
@@ -324,3 +324,4 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 }
+

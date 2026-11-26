@@ -33,11 +33,13 @@ def main() -> int:
     shutil.copyfile(SOURCE_HTML, target)
 
     html = target.read_text(encoding="utf-8")
-    for marker in ("dsq.bank.v1", "dsq.session.v1", "dsq.wrong.v1", "dsq.history.v1"):
+    for marker in ("dsq.bank.v1", "dsq.session.v1", "dsq.wrong.v1", "dsq.history.v1", "dsq.subjects.v2", "dsq.ai.v1"):
         if marker not in html:
             raise SystemExit(f"页面缺少存储键：{marker}")
     if "https://github.com/xiazhuo123456789" not in html:
         raise SystemExit("页面缺少 GitHub 入口")
+    if "DEEPSEEK · AI TUTOR" not in html:
+        raise SystemExit("页面缺少 AI 助教入口")
 
     data = target.read_bytes()
     sha = hashlib.sha256(data).hexdigest()

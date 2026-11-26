@@ -1,7 +1,7 @@
 {
   "name": "data-structure-quiz",
-  "version": "1.2.5",
-  "description": "数据结构（C语言版）第 1—5 章 + 随堂练习本地刷题系统：考试模式、作业模式、撕封条看解析、错题本、历史记录回看、题库导入导出",
+  "version": "1.3.0",
+  "description": "多学科本地答题台 + DeepSeek AI 助教：学科题库、考试模式、作业模式、错题本、练习记录、题库导入导出、粘贴题目问 AI",
   "main": "electron/main.js",
   "author": "xiazhuo123456789",
   "license": "MIT",
@@ -22,7 +22,7 @@
   },
   "build": {
     "appId": "com.xiazhuo.datastructurequiz",
-    "productName": "数据结构刷题系统",
+    "productName": "研题台",
     "copyright": "Copyright © 2026 xiazhuo123456789",
     "asar": true,
     "compression": "normal",
@@ -47,7 +47,7 @@
         }
       ],
       "icon": "assets/icon.ico",
-      "artifactName": "数据结构刷题系统-Setup-${version}.${ext}"
+      "artifactName": "研题台-Setup-${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,
@@ -56,7 +56,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,
-      "shortcutName": "数据结构刷题系统",
+      "shortcutName": "研题台",
       "deleteAppDataOnUninstall": false,
       "installerLanguages": [
         "zh_CN"

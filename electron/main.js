@@ -2,11 +2,27 @@ const { app, BrowserWindow, Menu, shell, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-const APP_NAME = '数据结构刷题系统';
+const APP_NAME = '研题台';
 const GITHUB_URL = 'https://github.com/xiazhuo123456789';
 
 app.setName(APP_NAME);
 app.setAppUserModelId('com.xiazhuo.datastructurequiz');
+
+// 旧版 1.2.x 的用户目录叫“数据结构刷题系统”。首启时复制一份到新目录，
+// 避免答题记录、题库和窗口位置丢失；旧目录保留，不删除。
+(function migrateLegacyUserData(){
+  if(!app.isPackaged) return;
+  try{
+    const appData = app.getPath('appData');
+    const legacyDir = path.join(appData, '数据结构刷题系统');
+    const currentDir = path.join(appData, APP_NAME);
+    if(fs.existsSync(legacyDir) && !fs.existsSync(currentDir)){
+      fs.cpSync(legacyDir, currentDir, { recursive: true });
+    }
+  }catch(e){
+    // 迁移失败不阻塞启动，最多回到全新记录。
+  }
+})();
 
 let mainWindow = null;
 let saveTimer = null;
@@ -88,7 +104,7 @@ function showAbout() {
     type: 'info',
     title: '关于',
     message: APP_NAME,
-    detail: `版本 ${app.getVersion()}\n数据结构（C语言版）第 1—5 章 125 题 + 随堂练习 30 题\n考试模式 / 作业模式 / 错题本 / 历史记录回看 / 题库导入导出\n\nGitHub：${GITHUB_URL}`,
+    detail: `版本 ${app.getVersion()}\n多学科题库 + DeepSeek AI 助教\n考试模式 / 作业模式 / 错题本 / 练习记录 / 题库导入导出 / AI 问答\n\nGitHub：${GITHUB_URL}`,
     buttons: ['确定']
   });
 }

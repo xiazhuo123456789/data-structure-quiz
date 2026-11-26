@@ -1,19 +1,19 @@
 # 安卓版构建说明
 
-这是“数据结构刷题系统”的安卓外壳。它用原生 `WebView` 加载 `assets/index.html`，不依赖在线页面，不需要网络权限。
+这是“研题台”的安卓外壳。它用原生 `WebView` 加载 `assets/index.html`，题库和答题记录都在本机；网络权限只用于 DeepSeek AI 问答。
 
 ## 版本信息
 
 | 项目 | 值 |
 | --- | --- |
-| 应用名称 | 数据结构刷题系统 |
+| 应用名称 | 研题台 |
 | 包名 | `com.xiazhuo.datastructurequiz` |
-| 版本名 | `1.2.5` |
-| 版本号 | `10205` |
+| 版本名 | `1.3.0` |
+| 版本号 | `10300` |
 | 最低系统 | Android 8.0（API 26） |
 | 目标系统 | Android 14（API 34） |
 | 编译 SDK | Android 15（API 35） |
-| 权限 | 无 |
+| 权限 | `INTERNET`（仅 AI 问答） |
 | 页面来源 | `file:///android_asset/index.html` |
 
 ## 目录
@@ -103,11 +103,11 @@ E:\Android\Sdk\build-tools\35.0.0\aapt2.exe dump permissions app-release.apk
 
 - 返回键：网页有历史时后退；没有历史时退到桌面，不直接杀进程。
 - 外部链接：GitHub 等 `http/https` 链接交给系统浏览器打开。
-- 导入题库：点“导入 JSON 题库”会打开系统文件选择器，选中 JSON 后由页面读取并替换题库。
+- 导入题库：点“导入 JSON 题库”会打开系统文件选择器，选中 JSON 后由页面读取并替换当前学科的题库。
 - 导出题库：点“导出当前题库”会打开系统“另存为”面板，直接保存 JSON，不需要存储权限。
 - 页面滚动、输入框和 `localStorage` 都由 WebView 自己处理。
 - 应用锁定竖屏，避免答题页在横屏下过矮。
-- 不申请网络权限，也不申请存储权限。
+- 申请 `INTERNET` 权限，只用于 DeepSeek AI 问答；不申请存储权限。
 
 ## 已知限制
 
